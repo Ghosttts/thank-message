@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Thank You Message</title>	    
+    <link type="text/css" rel="stylesheet" href="file/default.css">
+    <script type="text/javascript" src="file/jquery.min.js"></script>
+    <script type="text/javascript" src="file/jscex.min.js"></script>
+    <script type="text/javascript" src="file/jscex-parser.js"></script>
+    <script type="text/javascript" src="file/jscex-jit.js"></script>
+    <script type="text/javascript" src="file/jscex-builderbase.min.js"></script>
+    <script type="text/javascript" src="file/jscex-async.min.js"></script>
+    <script type="text/javascript" src="file/jscex-async-powerpack.min.js"></script>
+    <script type="text/javascript" src="file/function.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file/tree.js" charset="utf-8"></script>
+    <script>
+        function playAudio() {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+        }
+    </script>
+</head>
+<body>
+    <div id="main">
+        <div id="error"><a href="http://www.google.cn/chrome/intl/zh-CN/landing_chrome.html?hl=zh-CN&brand=CHMI">Chrome</a> (<a href="http://firefox.com.cn/download/">Firefox</a>)</div>
+        <audio height="100" width="100" id="myAudio">
+            <source src="acousticbreeze.mp3" type="audio/mp3" />
+            <embed height="100" width="100" src="acousticbreeze.mp3" />
+        </audio>
+
+        <!-- Start button to begin text + music together -->
+        <div id="start-button-wrapper">
+            <button id="start-button">Click me</button>
+        </div>
+
+        <div id="wrap">
+            <div id="text">
+                <div id="code">
+                    <span class="say">Hello [Boss’s Name],</span><br>
+                    <span class="say">I just wanted to take a moment to say thank you.</span><br>
+                    <span class="say">Your support, guidance, and encouragement have truly meant a lot to me.</span><br>
+                    <span class="say">I’m very grateful for the time you took to help me and for always being willing to share your experience.</span><br>
+                    <span class="say">Working under your leadership has been a great learning experience</span><br>
+                    <span class="say">I genuinely appreciate everything you’ve done to support my growth.</span><br>
+                    <span class="say">hank you once again — it doesn’t go unnoticed.</span><br>
+                </div>
+            </div>
+            <div id="clock-box">
+                <span id="clock">577 days 0 hours 0 minutes 0 seconds</span> <!-- Change to "6940 days..." if needed -->
+            </div>
+            <canvas id="canvas" width="1100" height="680"></canvas>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var canvas = $('#canvas');
+
+        if (!canvas[0].getContext) {
+            $("#error").show();
+            return false;
+        }
+
+        var width = canvas.width();
+        var height = canvas.height();
+        canvas.attr("width", width);
+        canvas.attr("height", height);
+
+        // Create a simple tree with shooting stars
+        var tree = new Tree(canvas[0], width, height);
+
+        // Basic requestAnimationFrame polyfill
+        var raf = window.requestAnimationFrame ||
+                  window.webkitRequestAnimationFrame ||
+                  window.mozRequestAnimationFrame ||
+                  function (cb) { return setTimeout(cb, 1000 / 60); };
+
+        function animate() {
+            tree.update();
+            raf(animate);
+        }
+
+        // Start animations (tree runs in the background)
+        animate();
+
+        // Wait for button click to start text + audio together
+        $("#start-button").on("click touchstart", function (e) {
+            e.preventDefault();
+            // Hide the button once used
+            $("#start-button-wrapper").fadeOut(400);
+            // Start audio and text at the same time
+            playAudio();
+            $("#code").show().typewriter();
+        });
+    })();
+    </script>
+</body>
+</html>
